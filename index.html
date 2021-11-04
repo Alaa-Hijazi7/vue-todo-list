@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search filter</title>
+  <style>
+    * { 
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: sans-serif;
+    }
+    #_root {
+      margin: 1rem;
+    }
+    .result-container {
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .result {
+      padding: 1rem;
+      border-radius: 8px;
+      color: #145c50;
+      background-color: aquamarine;
+    }
+    input {
+      padding: .5rem 1rem;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <main id="_root">
+    <input type="text" placeholder="search language" v-model="search">
+    <div class="result-container">
+      <result v-for="item in resultQuery" :name="item"></result>
+    </div>
+  </main>
+
+  <script src="vue.js"></script>
+  <script>
+    Vue.component("result", {
+      props: ["name"],
+      template: `
+        <div class="result">
+          {{ name }}
+        </div>
+      `
+    });
+    const myVue = new Vue({
+      el: "#_root",
+      data: {
+        search: "",
+        languages: [
+          "HTML", "CSS", "JavaScript",
+          "PHP", "C#", "C++", "C", "Java",
+          "Python", "Swift", "Ruby"
+        ]
+      },
+      computed: {
+        resultQuery() {
+          return this.languages.filter((item) => this.search.toLowerCase().split(' ').every(v => item.toLowerCase().includes(v)))
+        }
+      }
+    });
+  </script>
+</body>
+</html>
