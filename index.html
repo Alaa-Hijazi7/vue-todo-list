@@ -1,65 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Search filter</title>
   <style>
-    * { 
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
       font-family: sans-serif;
     }
+
     #_root {
       margin: 1rem;
     }
+
     .result-container {
       margin-top: 1rem;
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
     .result {
       padding: 1rem;
       border-radius: 8px;
       color: #145c50;
       background-color: aquamarine;
     }
+
     input {
       padding: .5rem 1rem;
       font-size: 1rem;
     }
   </style>
 </head>
+
 <body>
+
   <main id="_root">
     <input type="text" placeholder="search language" v-model="search">
-    <div class="result-container">
-      <result v-for="item in resultQuery" :name="item"></result>
-    </div>
+    <ul class="result-container">
+      <li v-for="(item, index) in resultQuery" :key="index" class="result">
+        <h3>{{ item }}</h3>
+        <button v-on:click="deleteItem(index)">Delete</button>
+      </li>
+      <li>
+        <input type="text" placeholder="add new language" v-model="newItem">
+        <button v-on:click="addItem">Add</button>
+      </li>
+    </ul>
   </main>
 
   <script src="vue.js"></script>
   <script>
-    Vue.component("result", {
-      props: ["name"],
-      template: `
-        <div class="result">
-          {{ name }}
-        </div>
-      `
-    });
     const myVue = new Vue({
       el: "#_root",
       data: {
         search: "",
+        newItem: "",
         languages: [
-          "HTML", "CSS", "JavaScript",
-          "PHP", "C#", "C++", "C", "Java",
-          "Python", "Swift", "Ruby"
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "PHP",
+          "Python",
+          "Ruby",
+          "C#",
+          "C++",
+          "C",
+          "Java",
+          "Go",
+          "Swift",
+          "Objective-C",
+          "SQL",
+          "R",
+          "TypeScript",
         ]
+      },
+      methods: {
+        deleteItem: function (index) {
+          this.languages.splice(index, 1);
+          // and this is another way to delete item from array
+          // this.languages = this.languages.filter((item, i) => i !== index);
+        },
+        addItem: function () {
+          this.languages.push(this.newItem);
+          this.newItem = "";
+        }
       },
       computed: {
         resultQuery() {
@@ -69,4 +100,5 @@
     });
   </script>
 </body>
+
 </html>
