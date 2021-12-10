@@ -45,8 +45,8 @@
     <input type="text" placeholder="search language" v-model="search">
     <ul class="result-container">
       <li v-for="(item, index) in resultQuery" :key="index" class="result">
-        <h3>{{ item }}</h3>
-        <button v-on:click="deleteItem(index)">Delete</button>
+        <h3>{{ item.title }}</h3>
+        <button v-on:click="deleteItem(item.id)">Delete</button>
       </li>
       <li>
         <input type="text" placeholder="add new language" v-model="newItem">
@@ -63,9 +63,9 @@
         search: "",
         newItem: "",
         languages: [
-          "code",
-          "sleep",
-          "eat"
+          {title: "code", id: 0},
+          {title: "sleep", id: 1},
+          {title: "eat", id: 2},
         ]
       },
       methods: {
@@ -75,13 +75,13 @@
           // this.languages = this.languages.filter((item, i) => i !== index);
         },
         addItem: function () {
-          this.languages.push(this.newItem);
+          this.languages.push({title: this.newItem, id: this.languages.length});
           this.newItem = "";
         }
       },
       computed: {
         resultQuery() {
-          return this.languages.filter((item) => this.search.toLowerCase().split(' ').every(v => item.toLowerCase().includes(v)))
+          return this.languages.filter((item) => this.search.toLowerCase().split(' ').every(v => item.title.toLowerCase().includes(v)))
         }
       }
     });
